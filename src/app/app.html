@@ -1,0 +1,41 @@
+<div class="container">
+  <div class="card">
+    <div class="icon" [class.active]="wakeLock.isActive()">
+      <span>💡</span>
+    </div>
+
+    <h1>Screen Wake Lock</h1>
+    <p class="subtitle">Keep your screen on while this page is open</p>
+
+    @if (!wakeLock.isSupported()) {
+      <div class="alert">
+        ⚠️ Your browser does not support the Screen Wake Lock API.<br>
+        Try Chrome, Edge, or Safari 16.4+.
+      </div>
+    }
+
+    @if (wakeLock.errorMessage()) {
+      <div class="alert">⚠️ {{ wakeLock.errorMessage() }}</div>
+    }
+
+    <div class="status-badge" [class.on]="wakeLock.isActive()" [class.off]="!wakeLock.isActive()">
+      {{ wakeLock.isActive() ? '🟢 Screen is staying ON' : '🔴 Screen can turn off' }}
+    </div>
+
+    <button
+      class="toggle-btn"
+      [class.active]="wakeLock.isActive()"
+      [disabled]="!wakeLock.isSupported()"
+      (click)="wakeLock.toggle()">
+      {{ wakeLock.isActive() ? 'Turn Off Wake Lock' : 'Keep Screen ON' }}
+    </button>
+
+    <p class="hint">
+      @if (wakeLock.isActive()) {
+        Your screen will not go to sleep while you are on this page. ✅
+      } @else {
+        Press the button above to prevent your screen from turning off.
+      }
+    </p>
+  </div>
+</div>
