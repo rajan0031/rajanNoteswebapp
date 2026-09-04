@@ -6,12 +6,12 @@
       <span>💡</span>
     </div>
 
-    <h1>Screen Wake Lock</h1>
-    <p class="subtitle">Keep your screen on while this page is open</p>
+    <h1>Question Bank Lock</h1>
+    <p class="subtitle">Keep this question view open while you review the answer</p>
 
     @if (!wakeLock.isSupported()) {
     <div class="alert">
-      ⚠️ Your browser does not support the Screen Wake Lock API.<br>
+      ⚠️ Your browser does not support the question lock helper.<br>
       Try Chrome, Edge, or Safari 16.4+.
     </div>
     }
@@ -21,19 +21,19 @@
     }
 
     <div class="status-badge" [class.on]="wakeLock.isActive()" [class.off]="!wakeLock.isActive()">
-      {{ wakeLock.isActive() ? '🟢 Screen is staying ON' : '🔴 Screen can turn off' }}
+      {{ wakeLock.isActive() ? '🟢 Question view is staying open' : '🔴 Question view can close' }}
     </div>
 
     <button class="toggle-btn" [class.active]="wakeLock.isActive()" [disabled]="!wakeLock.isSupported()"
       (click)="wakeLock.toggle()">
-      {{ wakeLock.isActive() ? 'Turn Off Wake Lock' : 'Keep Screen ON' }}
+      {{ wakeLock.isActive() ? 'Close Question View' : 'Keep Question Open' }}
     </button>
 
     <p class="hint">
       @if (wakeLock.isActive()) {
-      Your screen will not go to sleep while you are on this page. ✅
+      Your question view will stay active while you are on this page. ✅
       } @else {
-      Press the button above to prevent your screen from turning off.
+      Press the button above to keep this question view open.
       }
     </p>
   </div>

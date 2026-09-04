@@ -1,15 +1,15 @@
-<div class="container py-4">
+<div class="container py-4" data-bs-theme="dark">
 
   <!-- Header -->
   <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
 
     <div>
       <h1 class="fw-bold mb-1">
-        Learning Notes
+        Question Bank
       </h1>
 
       <p class="text-secondary mb-0">
-        Store and manage your learning notes
+        Capture questions, answers, and quick revision points
       </p>
     </div>
 
@@ -19,7 +19,7 @@
       (click)="openAddModal()"
     >
       <i class="bi bi-plus-lg me-1"></i>
-      Add Note
+      Add Question
     </button>
 
   </div>
@@ -35,19 +35,20 @@
     <input
       type="text"
       class="form-control"
-      placeholder="Search notes..."
+      placeholder="Search questions or answers..."
       [(ngModel)]="searchText"
+      (ngModelChange)="onSearchChange($event)"
     >
 
   </div>
 
 
   <!-- Notes -->
-  @if (filteredNotes.length > 0) {
+  @if (pagedNotes.length > 0) {
 
     <div class="row g-4">
 
-      @for (item of filteredNotes; track item.id) {
+      @for (item of pagedNotes; track item.id) {
 
         <div class="col-12 col-md-6 col-lg-4">
 
@@ -58,7 +59,7 @@
               <div class="d-flex justify-content-between align-items-start mb-3">
 
                 <h5 class="card-title fw-bold mb-0">
-                  {{ item.title }}
+                  {{ item.question }}
                 </h5>
 
                 <span
@@ -74,7 +75,7 @@
 
 
               <p class="card-text text-secondary">
-                {{ item.description }}
+                {{ item.answer }}
               </p>
 
 
@@ -152,6 +153,35 @@
   }
 
 
+  @if (hasMultiplePages) {
+    <div class="d-flex justify-content-center mt-4">
+      <nav aria-label="Question pagination">
+        <ul class="pagination pagination-dark mb-0">
+          <li class="page-item" [class.disabled]="currentPage === 1">
+            <button class="page-link" type="button" (click)="previousPage()">
+              Previous
+            </button>
+          </li>
+
+          @for (page of pageNumbers; track page) {
+            <li class="page-item" [class.active]="currentPage === page">
+              <button class="page-link" type="button" (click)="goToPage(page)">
+                {{ page }}
+              </button>
+            </li>
+          }
+
+          <li class="page-item" [class.disabled]="currentPage === totalPages">
+            <button class="page-link" type="button" (click)="nextPage()">
+              Next
+            </button>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  }
+
+
   <!-- Empty State -->
   @if (filteredNotes.length === 0) {
 
@@ -171,10 +201,10 @@
 
       } @else {
 
-        <h4>No notes yet</h4>
+        <h4>No questions yet</h4>
 
         <p class="text-secondary">
-          Start adding your learning notes.
+          Start adding your question bank.
         </p>
 
         <button
@@ -183,7 +213,7 @@
           (click)="openAddModal()"
         >
           <i class="bi bi-plus-lg me-1"></i>
-          Add Your First Note
+          Add Your First Question
         </button>
 
       }
@@ -206,7 +236,7 @@
 
   <div class="modal-dialog modal-dialog-centered modal-lg">
 
-    <div class="modal-content">
+    <form class="modal-content" (ngSubmit)="saveNote()">
 
       <!-- Modal Header -->
       <div class="modal-header">
@@ -214,9 +244,9 @@
         <h5 class="modal-title fw-bold">
 
           @if (editingNote) {
-            Edit Note
+            Edit Question
           } @else {
-            Add New Note
+            Add New Question
           }
 
         </h5>
@@ -239,14 +269,15 @@
           <div class="col-12">
 
             <label class="form-label fw-semibold">
-              Note Title
+              Question
             </label>
 
             <input
               type="text"
               class="form-control"
-              placeholder="Enter note title"
-              [(ngModel)]="note.title"
+              name="title"
+              placeholder="Enter your question"
+              [(ngModel)]="note.question"
             >
 
           </div>
@@ -256,14 +287,15 @@
           <div class="col-12">
 
             <label class="form-label fw-semibold">
-              Description / Note
+              Answer
             </label>
 
             <textarea
               class="form-control"
+              name="description"
               rows="5"
-              placeholder="Write your note..."
-              [(ngModel)]="note.description"
+              placeholder="Write the answer here..."
+              [(ngModel)]="note.answer"
             ></textarea>
 
           </div>
@@ -278,6 +310,7 @@
 
             <select
               class="form-select"
+              name="level"
               [(ngModel)]="note.level"
             >
 
@@ -307,6 +340,7 @@
 
             <select
               class="form-select"
+              name="dataType"
               [(ngModel)]="note.dataType"
             >
 
@@ -365,6 +399,7 @@
             <input
               type="text"
               class="form-control"
+              name="category"
               placeholder="e.g. JavaScript, Angular, DSA"
               [(ngModel)]="note.category"
             >
@@ -410,9 +445,8 @@
         </button>
 
         <button
-          type="button"
+          type="submit"
           class="btn btn-primary"
-          (click)="saveNote()"
         >
           <i class="bi bi-save me-1"></i>
 
@@ -426,7 +460,7 @@
 
       </div>
 
-    </div>
+    </form>
 
   </div>
 

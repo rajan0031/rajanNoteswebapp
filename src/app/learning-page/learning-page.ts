@@ -14,6 +14,8 @@ export class LearningPage implements OnInit {
   notes: Note[] = [];
   searchText = '';
   editingNote: Note | null = null;
+  currentPage = 1;
+  readonly pageSize = 5;
 
   note: Note = this.createEmptyNote();
 
@@ -25,8 +27,8 @@ export class LearningPage implements OnInit {
 
   createEmptyNote(): Note {
     return {
-      title: '',
-      description: '',
+      question: '',
+      answer: '',
       level: 'Beginner',
       dataType: 'String',
       category: '',
@@ -38,6 +40,7 @@ export class LearningPage implements OnInit {
   async loadNotes(): Promise<void> {
     try {
       this.notes = await this.notesService.getNotes();
+      this.currentPage = 1;
     } catch (error) {
       console.error('Error loading notes:', error);
     }
@@ -45,13 +48,13 @@ export class LearningPage implements OnInit {
 
   async saveNote(): Promise<void> {
 
-    if (!this.note.title.trim()) {
-      alert('Please enter note title.');
+    if (!this.note.question.trim()) {
+      alert('Please enter a question.');
       return;
     }
 
-    if (!this.note.description.trim()) {
-      alert('Please enter note description.');
+    if (!this.note.answer.trim()) {
+      alert('Please enter an answer.');
       return;
     }
 
@@ -156,8 +159,8 @@ export class LearningPage implements OnInit {
     }
 
     return this.notes.filter(note =>
-      note.title.toLowerCase().includes(search) ||
-      note.description.toLowerCase().includes(search) ||
+      note.question.toLowerCase().includes(search) ||
+      note.answer.toLowerCase().includes(search) ||
       note.category.toLowerCase().includes(search) ||
       note.level.toLowerCase().includes(search) ||
       note.dataType.toLowerCase().includes(search) ||
@@ -165,6 +168,41 @@ export class LearningPage implements OnInit {
         tag.toLowerCase().includes(search)
       )
     );
+  }
+
+  get totalPages(): number {
+    return Math.max(1, Math.ceil(this.filteredNotes.length / this.pageSize));
+  }
+
+  get pagedNotes(): Note[] {
+    const page = Math.min(this.currentPage, this.totalPages);
+    const start = (page - 1) * this.pageSize;
+    return this.filteredNotes.slice(start, start + this.pageSize);
+  }
+
+  get hasMultiplePages(): boolean {
+    return this.filteredNotes.length > this.pageSize;
+  }
+
+  get pageNumbers(): number[] {
+    return Array.from({ length: this.totalPages }, (_, index) => index + 1);
+  }
+
+  goToPage(page: number): void {
+    this.currentPage = Math.min(Math.max(page, 1), this.totalPages);
+  }
+
+  onSearchChange(value: string): void {
+    this.searchText = value;
+    this.currentPage = 1;
+  }
+
+  previousPage(): void {
+    this.goToPage(this.currentPage - 1);
+  }
+
+  nextPage(): void {
+    this.goToPage(this.currentPage + 1);
   }
 
   formatDate(date: string): string {

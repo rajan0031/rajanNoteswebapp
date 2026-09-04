@@ -2,8 +2,10 @@ import { Injectable } from '@angular/core';
 
 export interface Note {
   id?: number;
-  title: string;
-  description: string;
+  question: string;
+  answer: string;
+  title?: string;
+  description?: string;
   level: string;
   dataType: string;
   category: string;
@@ -81,7 +83,9 @@ export class NotesService {
       const request = store.getAll();
 
       request.onsuccess = () => {
-        const notes = request.result as Note[];
+        const notes = (request.result as Note[]).map(note =>
+          this.normalizeNote(note)
+        );
 
         notes.sort((a, b) => {
           return new Date(b.createdAt).getTime() -
@@ -95,6 +99,15 @@ export class NotesService {
         reject(request.error);
       };
     });
+  }
+
+  private normalizeNote(note: Note): Note {
+    return {
+      ...note,
+      question: note.question ?? note.title ?? '',
+      answer: note.answer ?? note.description ?? '',
+      tags: note.tags ?? []
+    };
   }
 
   async updateNote(note: Note): Promise<void> {

@@ -1,0 +1,91 @@
+:host {
+  display: block;
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at top left, rgba(59, 130, 246, 0.16), transparent 32rem),
+    linear-gradient(135deg, #080b12 0%, #101522 45%, #0b1020 100%);
+  color: #e8edf7;
+}
+
+.container {
+  min-height: 100vh;
+}
+
+h1,
+h4,
+h5,
+.page-link,
+.form-label,
+.modal-title {
+  color: #f8fafc;
+}
+
+.text-secondary,
+.form-text,
+small {
+  color: #9aa7bd !important;
+}
+
+.card,
+.modal-content {
+  background: #111827;
+  border: 1px solid #263244;
+  color: #e8edf7;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35);
+}
+
+.card-footer,
+.modal-header,
+.modal-footer {
+  border-color: #263244 !important;
+}
+
+.input-group-text,
+.form-control,
+.form-select {
+  background-color: #0b1220;
+  border-color: #2c3a4f;
+  color: #f8fafc;
+}
+
+.form-control::placeholder {
+  color: #708098;
+}
+
+.form-control:focus,
+.form-select:focus {
+  background-color: #0e1728;
+  border-color: #4f8cff;
+  color: #ffffff;
+  box-shadow: 0 0 0 0.2rem rgba(79, 140, 255, 0.2);
+}
+
+.badge.text-bg-light {
+  background-color: #1d2838 !important;
+  border-color: #354258 !important;
+  color: #d8e2f0 !important;
+}
+
+.badge.bg-primary-subtle {
+  background-color: rgba(79, 140, 255, 0.18) !important;
+  color: #9cc2ff !important;
+}
+
+.btn-close {
+  filter: invert(1) grayscale(1);
+}
+
+.pagination .page-link {
+  background: #0b1220;
+  border-color: #2c3a4f;
+}
+
+.pagination .page-item.active .page-link {
+  background: #4f8cff;
+  border-color: #4f8cff;
+}
+
+.pagination .page-item.disabled .page-link {
+  background: #09101c;
+  color: #64748b;
+}
