@@ -1,0 +1,433 @@
+<div class="container py-4">
+
+  <!-- Header -->
+  <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
+
+    <div>
+      <h1 class="fw-bold mb-1">
+        Learning Notes
+      </h1>
+
+      <p class="text-secondary mb-0">
+        Store and manage your learning notes
+      </p>
+    </div>
+
+    <button
+      type="button"
+      class="btn btn-primary"
+      (click)="openAddModal()"
+    >
+      <i class="bi bi-plus-lg me-1"></i>
+      Add Note
+    </button>
+
+  </div>
+
+
+  <!-- Search -->
+  <div class="input-group mb-4">
+
+    <span class="input-group-text">
+      <i class="bi bi-search"></i>
+    </span>
+
+    <input
+      type="text"
+      class="form-control"
+      placeholder="Search notes..."
+      [(ngModel)]="searchText"
+    >
+
+  </div>
+
+
+  <!-- Notes -->
+  @if (filteredNotes.length > 0) {
+
+    <div class="row g-4">
+
+      @for (item of filteredNotes; track item.id) {
+
+        <div class="col-12 col-md-6 col-lg-4">
+
+          <div class="card h-100 shadow-sm">
+
+            <div class="card-body">
+
+              <div class="d-flex justify-content-between align-items-start mb-3">
+
+                <h5 class="card-title fw-bold mb-0">
+                  {{ item.title }}
+                </h5>
+
+                <span
+                  class="badge"
+                  [class.bg-success]="item.level === 'Beginner'"
+                  [class.bg-warning]="item.level === 'Intermediate'"
+                  [class.bg-danger]="item.level === 'Advanced'"
+                >
+                  {{ item.level }}
+                </span>
+
+              </div>
+
+
+              <p class="card-text text-secondary">
+                {{ item.description }}
+              </p>
+
+
+              <div class="mb-3">
+
+                <span class="badge text-bg-light border me-1">
+                  Type: {{ item.dataType }}
+                </span>
+
+                @if (item.category) {
+
+                  <span class="badge text-bg-light border">
+                    {{ item.category }}
+                  </span>
+
+                }
+
+              </div>
+
+
+              @if (item.tags.length > 0) {
+
+                <div class="mb-3">
+
+                  @for (tag of item.tags; track tag) {
+
+                    <span class="badge bg-primary-subtle text-primary me-1">
+                      #{{ tag }}
+                    </span>
+
+                  }
+
+                </div>
+
+              }
+
+
+              <small class="text-secondary">
+                {{ formatDate(item.createdAt) }}
+              </small>
+
+            </div>
+
+
+            <div class="card-footer bg-transparent border-0 d-flex gap-2 pb-3 px-3">
+
+              <button
+                type="button"
+                class="btn btn-outline-primary btn-sm flex-fill"
+                (click)="editNote(item)"
+              >
+                <i class="bi bi-pencil"></i>
+                Edit
+              </button>
+
+              <button
+                type="button"
+                class="btn btn-outline-danger btn-sm flex-fill"
+                (click)="deleteNote(item)"
+              >
+                <i class="bi bi-trash"></i>
+                Delete
+              </button>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      }
+
+    </div>
+
+  }
+
+
+  <!-- Empty State -->
+  @if (filteredNotes.length === 0) {
+
+    <div class="text-center py-5">
+
+      <div class="display-1 mb-3">
+        📝
+      </div>
+
+      @if (searchText) {
+
+        <h4>No notes found</h4>
+
+        <p class="text-secondary">
+          Try a different search term.
+        </p>
+
+      } @else {
+
+        <h4>No notes yet</h4>
+
+        <p class="text-secondary">
+          Start adding your learning notes.
+        </p>
+
+        <button
+          type="button"
+          class="btn btn-primary"
+          (click)="openAddModal()"
+        >
+          <i class="bi bi-plus-lg me-1"></i>
+          Add Your First Note
+        </button>
+
+      }
+
+    </div>
+
+  }
+
+</div>
+
+
+<!-- Add/Edit Note Modal -->
+
+<div
+  class="modal fade"
+  id="noteModal"
+  tabindex="-1"
+  aria-hidden="true"
+>
+
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+
+    <div class="modal-content">
+
+      <!-- Modal Header -->
+      <div class="modal-header">
+
+        <h5 class="modal-title fw-bold">
+
+          @if (editingNote) {
+            Edit Note
+          } @else {
+            Add New Note
+          }
+
+        </h5>
+
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+        ></button>
+
+      </div>
+
+
+      <!-- Modal Body -->
+      <div class="modal-body">
+
+        <div class="row g-3">
+
+          <!-- Title -->
+          <div class="col-12">
+
+            <label class="form-label fw-semibold">
+              Note Title
+            </label>
+
+            <input
+              type="text"
+              class="form-control"
+              placeholder="Enter note title"
+              [(ngModel)]="note.title"
+            >
+
+          </div>
+
+
+          <!-- Description -->
+          <div class="col-12">
+
+            <label class="form-label fw-semibold">
+              Description / Note
+            </label>
+
+            <textarea
+              class="form-control"
+              rows="5"
+              placeholder="Write your note..."
+              [(ngModel)]="note.description"
+            ></textarea>
+
+          </div>
+
+
+          <!-- Level -->
+          <div class="col-md-6">
+
+            <label class="form-label fw-semibold">
+              Level
+            </label>
+
+            <select
+              class="form-select"
+              [(ngModel)]="note.level"
+            >
+
+              <option value="Beginner">
+                Beginner
+              </option>
+
+              <option value="Intermediate">
+                Intermediate
+              </option>
+
+              <option value="Advanced">
+                Advanced
+              </option>
+
+            </select>
+
+          </div>
+
+
+          <!-- Data Type -->
+          <div class="col-md-6">
+
+            <label class="form-label fw-semibold">
+              Data Type
+            </label>
+
+            <select
+              class="form-select"
+              [(ngModel)]="note.dataType"
+            >
+
+              <option value="String">
+                String
+              </option>
+
+              <option value="Number">
+                Number
+              </option>
+
+              <option value="Boolean">
+                Boolean
+              </option>
+
+              <option value="Array">
+                Array
+              </option>
+
+              <option value="Object">
+                Object
+              </option>
+
+              <option value="Function">
+                Function
+              </option>
+
+              <option value="Class">
+                Class
+              </option>
+
+              <option value="Concept">
+                Concept
+              </option>
+
+              <option value="Code">
+                Code
+              </option>
+
+              <option value="Other">
+                Other
+              </option>
+
+            </select>
+
+          </div>
+
+
+          <!-- Category -->
+          <div class="col-md-6">
+
+            <label class="form-label fw-semibold">
+              Category
+            </label>
+
+            <input
+              type="text"
+              class="form-control"
+              placeholder="e.g. JavaScript, Angular, DSA"
+              [(ngModel)]="note.category"
+            >
+
+          </div>
+
+
+          <!-- Tags -->
+          <div class="col-md-6">
+
+            <label class="form-label fw-semibold">
+              Tags
+            </label>
+
+            <input
+              type="text"
+              class="form-control"
+              placeholder="angular, javascript, frontend"
+              [value]="note.tags.join(', ')"
+              (input)="getTags($event)"
+            >
+
+            <div class="form-text">
+              Separate tags using commas.
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- Modal Footer -->
+      <div class="modal-footer">
+
+        <button
+          type="button"
+          class="btn btn-secondary"
+          data-bs-dismiss="modal"
+        >
+          Cancel
+        </button>
+
+        <button
+          type="button"
+          class="btn btn-primary"
+          (click)="saveNote()"
+        >
+          <i class="bi bi-save me-1"></i>
+
+          @if (editingNote) {
+            Update Note
+          } @else {
+            Save Note
+          }
+
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
