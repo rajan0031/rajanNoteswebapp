@@ -4,15 +4,11 @@ import { Injectable } from '@angular/core';
   providedIn: 'root',
 })
 export class Connectdb {
-
-  private mongoUrl =
-    'mongodb+srv://raykushwaha0031:C1k4maJXzH2vAmh4@blog.zlf5agh.mongodb.net/Note';
-
   constructor() {
-    console.log('MongoDB configuration loaded');
+    // MongoDB is accessed only by the Netlify serverless function.
   }
 
   getMongoUrl(): string {
-    return this.mongoUrl;
+    return '/.netlify/functions/visits';
   }
 }

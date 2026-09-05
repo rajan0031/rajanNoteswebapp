@@ -12,6 +12,8 @@ import { Note, NotesService } from '../notes.service';
 export class LearningPage implements OnInit {
 
   notes: Note[] = [];
+  isLoading = true;
+  loadError = '';
   searchText = '';
   editingNote: Note | null = null;
   currentPage = 1;
@@ -38,11 +40,17 @@ export class LearningPage implements OnInit {
   }
 
   async loadNotes(): Promise<void> {
+    this.isLoading = true;
+    this.loadError = '';
     try {
+      await this.notesService.seedDsaQuestions();
       this.notes = await this.notesService.getNotes();
       this.currentPage = 1;
     } catch (error) {
       console.error('Error loading notes:', error);
+      this.loadError = 'Questions could not be loaded. Please refresh the page.';
+    } finally {
+      this.isLoading = false;
     }
   }
 

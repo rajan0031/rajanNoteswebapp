@@ -42,9 +42,15 @@
 
   </div>
 
+  @if (isLoading) {
+    <div class="text-center py-5 text-secondary">Loading questions...</div>
+  } @else if (loadError) {
+    <div class="alert alert-danger text-center">{{ loadError }}</div>
+  }
+
 
   <!-- Notes -->
-  @if (pagedNotes.length > 0) {
+  @if (!isLoading && !loadError && pagedNotes.length > 0) {
 
     <div class="row g-4">
 
@@ -153,7 +159,7 @@
   }
 
 
-  @if (hasMultiplePages) {
+  @if (!isLoading && !loadError && hasMultiplePages) {
     <div class="d-flex justify-content-center mt-4">
       <nav aria-label="Question pagination">
         <ul class="pagination pagination-dark mb-0">
@@ -183,7 +189,7 @@
 
 
   <!-- Empty State -->
-  @if (filteredNotes.length === 0) {
+  @if (!isLoading && !loadError && filteredNotes.length === 0) {
 
     <div class="text-center py-5">
 

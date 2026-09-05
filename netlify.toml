@@ -1,6 +1,7 @@
 [build]
   command = "npm run build"
   publish = "dist/screen_on/browser"
+  functions = "netlify/functions"
 
 # If you prefer to remove the @netlify/angular-runtime plugin, you can delete
 # it from the Netlify UI; otherwise the plugin will expect the Angular

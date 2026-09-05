@@ -1,40 +1,45 @@
-<app-learning-page></app-learning-page>
+@if (isUnlocked) {
+  <app-learning-page></app-learning-page>
 
-<div class="container">
-  <div class="card">
-    <div class="icon" [class.active]="wakeLock.isActive()">
-      <span>💡</span>
-    </div>
-
-    <h1>Question Bank Lock</h1>
-    <p class="subtitle">Keep this question view open while you review the answer</p>
-
-    @if (!wakeLock.isSupported()) {
-    <div class="alert">
-      ⚠️ Your browser does not support the question lock helper.<br>
-      Try Chrome, Edge, or Safari 16.4+.
-    </div>
-    }
-
-    @if (wakeLock.errorMessage()) {
-    <div class="alert">⚠️ {{ wakeLock.errorMessage() }}</div>
-    }
-
-    <div class="status-badge" [class.on]="wakeLock.isActive()" [class.off]="!wakeLock.isActive()">
-      {{ wakeLock.isActive() ? '🟢 Question view is staying open' : '🔴 Question view can close' }}
-    </div>
-
-    <button class="toggle-btn" [class.active]="wakeLock.isActive()" [disabled]="!wakeLock.isSupported()"
-      (click)="wakeLock.toggle()">
-      {{ wakeLock.isActive() ? 'Close Question View' : 'Keep Question Open' }}
-    </button>
-
-    <p class="hint">
-      @if (wakeLock.isActive()) {
-      Your question view will stay active while you are on this page. ✅
-      } @else {
-      Press the button above to keep this question view open.
-      }
-    </p>
+  <div class="visit-counter" aria-live="polite">
+    <span class="visit-dot"></span>
+    {{ visitCount() }} {{ visitCount() === 1 ? 'visit' : 'visits' }}
   </div>
-</div>
+
+  <div class="container">
+    <div class="card">
+      <div class="icon" [class.active]="wakeLock.isActive()"><span>💡</span></div>
+      <h1>Question Bank Lock</h1>
+      <p class="subtitle">Keep this question view open while you review the answer</p>
+
+      @if (!wakeLock.isSupported()) {
+        <div class="alert">⚠️ Your browser does not support the question lock helper.<br>Try Chrome, Edge, or Safari 16.4+.</div>
+      }
+      @if (wakeLock.errorMessage()) { <div class="alert">⚠️ {{ wakeLock.errorMessage() }}</div> }
+
+      <div class="status-badge" [class.on]="wakeLock.isActive()" [class.off]="!wakeLock.isActive()">
+        {{ wakeLock.isActive() ? '🟢 Question view is staying open' : '🔴 Question view can close' }}
+      </div>
+      <button class="toggle-btn" [class.active]="wakeLock.isActive()" [disabled]="!wakeLock.isSupported()" (click)="wakeLock.toggle()">
+        {{ wakeLock.isActive() ? 'Close Question View' : 'Keep Question Open' }}
+      </button>
+      <p class="hint">
+        @if (wakeLock.isActive()) { Your question view will stay active while you are on this page. ✅ }
+        @else { Press the button above to keep this question view open. }
+      </p>
+    </div>
+  </div>
+} @else {
+  <div class="security-backdrop">
+    <form class="security-modal" (submit)="$event.preventDefault(); unlock()">
+      <div class="security-icon">🔐</div>
+      <p class="security-eyebrow">Private Question Bank</p>
+      <h1>Enter Security Code</h1>
+      <p class="security-subtitle">Enter the security code to open the question bank.</p>
+      <label class="security-label" for="security-code">Security code</label>
+      <input id="security-code" class="security-input" type="password" name="securityCode" [(ngModel)]="securityCode" autocomplete="current-password" autofocus required>
+      @if (securityError) { <p class="security-error">{{ securityError }}</p> }
+      <button class="security-button" type="submit">Open Question Bank</button>
+    </form>
+  </div>
+}

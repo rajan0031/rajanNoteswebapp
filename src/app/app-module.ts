@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { FormsModule } from '@angular/forms';
 
 import { App } from './app';
 import { LearningPage } from './learning-page/learning-page';
@@ -11,6 +12,7 @@ import { LearningPage } from './learning-page/learning-page';
 
   imports: [
     BrowserModule,
+    FormsModule,
     LearningPage
   ],
 
