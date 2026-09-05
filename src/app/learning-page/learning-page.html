@@ -1,4 +1,35 @@
-<div class="container py-4" data-bs-theme="dark">
+<div class="roadmap-shell" data-bs-theme="dark">
+  <header class="roadmap-nav">
+    <button type="button" class="brand" (click)="showRoadmap()"><span class="brand-mark">&lt;/&gt;</span> DSA Daily</button>
+    <nav aria-label="Learning sections">
+      <button type="button" [class.active]="activeView === 'roadmap'" (click)="showRoadmap()">DSA roadmap</button>
+      <button type="button" [class.active]="activeView === 'questions'" (click)="showQuestions()">My questions</button>
+    </nav>
+  </header>
+
+  @if (activeView === 'roadmap') {
+    <main class="roadmap-content">
+      <section class="roadmap-hero">
+        <p class="eyebrow">ONE QUESTION DAILY</p>
+        <h1>Build your DSA pattern library.</h1>
+        <p>Practice in a focused order. Pick a pattern, solve a problem, and come back tomorrow.</p>
+        <div class="roadmap-stats"><span><strong>{{ patterns.length }}</strong> patterns</span><span><strong>{{ totalRoadmapQuestions }}</strong> curated problems</span><span>LeetCode &amp; GeeksforGeeks links</span></div>
+      </section>
+      <section class="roadmap-controls" aria-label="Filter DSA questions">
+        <label class="search-field"><i class="bi bi-search"></i><input type="search" [(ngModel)]="patternSearch" placeholder="Search a problem..." aria-label="Search problems"></label>
+        <select [(ngModel)]="selectedPattern" aria-label="Choose a pattern"><option>All patterns</option>@for (pattern of patterns; track pattern.name) { <option>{{ pattern.name }}</option> }</select>
+      </section>
+      <section class="pattern-grid">
+        @for (pattern of visiblePatterns; track pattern.name) {
+          <article class="pattern-card" [attr.data-accent]="pattern.accent">
+            <div class="pattern-card-header"><div><p>DSA PATTERN</p><h2>{{ pattern.name }}</h2></div><span>{{ pattern.questions.length }}</span></div>
+            <ol class="question-list">@for (question of pattern.questions; track question.name) { <li><a [href]="question.link" target="_blank" rel="noopener noreferrer"><span>{{ question.name }}</span><em [class]="question.difficulty.toLowerCase()">{{ question.difficulty }}</em><i class="bi bi-arrow-up-right"></i></a></li> }</ol>
+          </article>
+        } @empty { <div class="no-results">No DSA problem matches that search.</div> }
+      </section>
+    </main>
+  } @else {
+<div class="container py-4">
 
   <!-- Header -->
   <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
@@ -470,4 +501,6 @@
 
   </div>
 
+</div>
+  }
 </div>

@@ -1,0 +1,91 @@
+<main class="dashboard" data-bs-theme="dark">
+  <header class="topbar">
+    <div class="brand"><span>&lt;/&gt;</span>
+      <div><strong>DSA Daily</strong><small>One question daily</small></div>
+    </div>
+    <a href="/dsa-patterns-cheat-sheet.csv" download>Download original CSV <i class="bi bi-download"></i></a>
+  </header>
+
+  <section class="hero">
+    <p class="eyebrow">DSA PATTERN CHEAT SHEET</p>
+    <h1>Your problem-solving dashboard.</h1>
+    <p>The complete study sheet, preserved from your CSV, with a personal revision tracker.</p>
+  </section>
+
+  @if (isLoading) {
+  <div class="message">Loading the complete DSA cheat sheet…</div>
+  } @else if (loadError) {
+  <div class="message error">{{ loadError }}</div>
+  } @else {
+  <section class="metrics" aria-label="Your DSA progress">
+    <article><span>Total problems</span><strong>{{ totalQuestions }}</strong><small>from the original CSV</small>
+    </article>
+    <article><span>Solved</span><strong>{{ solvedQuestions }}</strong><small>{{ completionPercent }}% of roadmap</small>
+    </article>
+    <article><span>In revision</span><strong>{{ revisionQuestions }}</strong><small>ready for your next review</small>
+    </article>
+    <article class="progress-card"><span>Completion</span><strong>{{ completionPercent }}%</strong>
+      <div class="progress-track"><i [style.width.%]="completionPercent"></i></div>
+    </article>
+  </section>
+
+  <section class="filters" aria-label="Filter questions">
+    <label class="search"><i class="bi bi-search"></i><input type="search" [(ngModel)]="patternSearch"
+        placeholder="Search pattern, group or question"></label>
+    <select [(ngModel)]="selectedPattern">
+      <option>All patterns</option>@for (pattern of patterns; track pattern.name) { <option>{{ pattern.name }}</option>
+      }
+    </select>
+    <select [(ngModel)]="selectedStatus">
+      <option>All statuses</option>@for (status of statuses; track status) { <option>{{ status }}</option> }
+    </select>
+  </section>
+
+  <section class="patterns">
+    @for (pattern of visiblePatterns; track pattern.name) {
+    <article class="pattern">
+      <header>
+        <div>
+          <p>ORIGINAL CSV PATTERN</p>
+          <h2>{{ pattern.name }}</h2>
+        </div><span>{{ pattern.questions.length }} questions</span>
+      </header>
+      <div class="question-list">
+        @for (item of pattern.questions; track item.id) {
+        <article class="question" [class.solved-card]="getProgress(item.id).status === 'Solved'">
+          <div class="question-main">
+            @if (item.group) { <span class="group">{{ item.group }}</span> }
+            <h3>{{ item.question || 'Untitled CSV row' }}</h3>
+            @if (item.links.length || item.notes.length) {
+            <div class="links">
+              @for (link of item.links; track link; let linkIndex = $index) { <a [href]="link" target="_blank"
+                rel="noopener noreferrer">Link {{ linkIndex + 1 }} <i class="bi bi-box-arrow-up-right"></i></a> }
+              @for (note of item.notes; track note) { <span>{{ note }}</span> }
+            </div>
+            }
+          </div>
+          <div class="tracker">
+            <select [ngModel]="getProgress(item.id).status" (ngModelChange)="changeStatus(item.id, $event)"
+              [class]="statusClass(item.id)">
+              @for (status of statuses; track status) { <option [value]="status">{{ status }}</option> }
+            </select>
+            <div class="dates"><span>Attempt: <b>{{ formatDate(getProgress(item.id).lastAttempt)
+                  }}</b></span><span>Revision: <b>{{ formatDate(getProgress(item.id).lastRevision) }}</b></span></div>
+            <div class="revision-stepper" aria-label="Revision count"><span>Revisions</span><button type="button"
+                (click)="decrementRevision(item.id)" [disabled]="getProgress(item.id).revisionCount === 0"
+                aria-label="Reduce revision count">−</button><strong>{{ getProgress(item.id).revisionCount
+                }}</strong><button type="button" (click)="markRevision(item.id)"
+                aria-label="Increase revision count">+</button></div>
+            <div class="actions"><button type="button" (click)="markAttempt(item.id)">Attempt</button><button
+                type="button" class="solve" (click)="markSolved(item.id)">Solved</button>@if (leetCodeLink(item); as
+              leetCodeLink) { <a class="leetcode" [href]="leetCodeLink" target="_blank" rel="noopener noreferrer">Solve
+                this problem <i class="bi bi-box-arrow-up-right"></i></a> }</div>
+          </div>
+        </article>
+        }
+      </div>
+    </article>
+    } @empty { <div class="message">No questions match your current filters.</div> }
+  </section>
+  }
+</main>

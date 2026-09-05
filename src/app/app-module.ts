@@ -3,7 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 
 import { App } from './app';
-import { LearningPage } from './learning-page/learning-page';
+import { DsaDashboard } from './dsa-dashboard/dsa-dashboard';
 
 @NgModule({
   declarations: [
@@ -13,7 +13,7 @@ import { LearningPage } from './learning-page/learning-page';
   imports: [
     BrowserModule,
     FormsModule,
-    LearningPage
+    DsaDashboard
   ],
 
   providers: [],

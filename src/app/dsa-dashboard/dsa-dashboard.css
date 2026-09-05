@@ -1,0 +1,352 @@
+:host {
+  display: block;
+  min-height: 100vh;
+  background: #0a0f1a;
+  color: #e8edf7;
+}
+.revision-stepper {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin: 7px 0 9px;
+  color: #8697af;
+  font-size: 10px;
+}
+.revision-stepper span {
+  margin-right: auto;
+}
+.revision-stepper button {
+  width: 23px;
+  height: 22px;
+  padding: 0;
+  border: 1px solid #3a4c67;
+  border-radius: 4px;
+  background: #182338;
+  color: #c7d5e9;
+  font-size: 15px;
+  line-height: 1;
+}
+.revision-stepper button:disabled {
+  cursor: not-allowed;
+  opacity: 0.38;
+}
+.revision-stepper strong {
+  min-width: 16px;
+  color: #e7eef9;
+  text-align: center;
+  font-size: 12px;
+}
+.actions .leetcode {
+  flex: 1;
+  padding: 6px 4px;
+  border: 1px solid #7a5623;
+  border-radius: 5px;
+  background: #182338;
+  color: #ffca72;
+  font-size: 11px;
+  text-align: center;
+  text-decoration: none;
+}
+.dashboard {
+  max-width: 1320px;
+  margin: auto;
+  padding: 0 24px 64px;
+}
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px 0;
+  border-bottom: 1px solid #243146;
+}
+.brand {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+.brand > span {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  background: #5c7cfa;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 800;
+}
+.brand strong,
+.brand small {
+  display: block;
+}
+.brand small {
+  margin-top: 2px;
+  color: #8c9cb2;
+  font-size: 11px;
+}
+.topbar a {
+  color: #b6c8ff;
+  font-size: 13px;
+  text-decoration: none;
+}
+.hero {
+  max-width: 760px;
+  padding: 72px 0 36px;
+}
+.eyebrow,
+.pattern header p {
+  margin: 0 0 10px;
+  color: #95aafe;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+}
+.hero h1 {
+  margin: 0;
+  font-size: clamp(2.4rem, 6vw, 5rem);
+  line-height: 1;
+  letter-spacing: -0.06em;
+  color: #f8fafc;
+}
+.hero > p:last-child {
+  margin: 20px 0 0;
+  color: #9aabc1;
+  font-size: 17px;
+  line-height: 1.7;
+}
+.metrics {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+.metrics article {
+  padding: 19px;
+  border: 1px solid #28364c;
+  border-radius: 12px;
+  background: #111927;
+}
+.metrics span,
+.metrics small {
+  display: block;
+  color: #91a1b8;
+  font-size: 12px;
+}
+.metrics strong {
+  display: block;
+  margin: 6px 0;
+  color: #f8fafc;
+  font-size: 27px;
+}
+.progress-track {
+  overflow: hidden;
+  height: 7px;
+  margin-top: 12px;
+  border-radius: 99px;
+  background: #27354a;
+}
+.progress-track i {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: #6f8cff;
+}
+.filters {
+  display: grid;
+  grid-template-columns: minmax(260px, 1fr) 230px 180px;
+  gap: 10px;
+  margin: 34px 0 16px;
+}
+.search {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 13px;
+  border: 1px solid #2b3b52;
+  border-radius: 8px;
+  background: #111927;
+  color: #91a1b8;
+}
+.search input,
+.filters select {
+  height: 44px;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: #eef4ff;
+}
+.search input {
+  width: 100%;
+}
+.filters select {
+  padding: 0 12px;
+  border: 1px solid #2b3b52;
+  border-radius: 8px;
+  background: #111927;
+}
+.patterns {
+  display: grid;
+  gap: 15px;
+}
+.pattern {
+  overflow: hidden;
+  border: 1px solid #2a394f;
+  border-radius: 12px;
+  background: #111927;
+}
+.pattern > header {
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+  padding: 22px 22px 16px;
+}
+.pattern h2 {
+  margin: 0;
+  color: #f2f6fd;
+  font-size: 19px;
+}
+.pattern header > span {
+  color: #a4b4cb;
+  font-size: 12px;
+}
+.question {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 340px;
+  gap: 20px;
+  padding: 17px 22px;
+  border-top: 1px solid #26364d;
+}
+.question.solved-card {
+  background: rgba(34, 197, 94, 0.035);
+}
+.group {
+  display: inline-block;
+  margin-bottom: 7px;
+  padding: 3px 7px;
+  border-radius: 4px;
+  background: #24324a;
+  color: #b8c8e2;
+  font-size: 10px;
+  font-weight: 700;
+}
+.question h3 {
+  margin: 0;
+  color: #dce5f3;
+  font-size: 15px;
+  font-weight: 600;
+}
+.links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin-top: 9px;
+}
+.links a,
+.links span {
+  padding: 3px 7px;
+  border: 1px solid #2c4267;
+  border-radius: 4px;
+  color: #9db9ff;
+  font-size: 11px;
+  text-decoration: none;
+}
+.links span {
+  border-color: #4b3e23;
+  color: #e7bf72;
+}
+.tracker select {
+  width: 100%;
+  height: 31px;
+  padding: 0 8px;
+  border: 1px solid #34445c;
+  border-radius: 6px;
+  background: #0c1422;
+  color: #dce6f7;
+  font-weight: 700;
+  font-size: 12px;
+}
+.tracker select.solved {
+  border-color: #26734e;
+  color: #7ee6ac;
+}
+.tracker select.revision {
+  border-color: #856d24;
+  color: #f5d76c;
+}
+.tracker select.attempted {
+  border-color: #496bb0;
+  color: #9cc0ff;
+}
+.dates {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 5px;
+  margin: 9px 0;
+  color: #8494ab;
+  font-size: 10px;
+}
+.dates b {
+  color: #b7c5d8;
+  font-weight: 600;
+}
+.actions {
+  display: flex;
+  gap: 6px;
+}
+.actions button {
+  flex: 1;
+  padding: 6px 4px;
+  border: 1px solid #34445c;
+  border-radius: 5px;
+  background: #182338;
+  color: #b9c8df;
+  font-size: 11px;
+}
+.actions .solve {
+  border-color: #27754f;
+  color: #7ee5ac;
+}
+.message {
+  padding: 50px;
+  border: 1px dashed #40516b;
+  border-radius: 12px;
+  color: #9bacc2;
+  text-align: center;
+}
+.message.error {
+  color: #fda4af;
+}
+@media (max-width: 850px) {
+  .metrics {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .filters {
+    grid-template-columns: 1fr;
+  }
+  .question {
+    grid-template-columns: 1fr;
+  }
+  .tracker {
+    max-width: 500px;
+  }
+}
+@media (max-width: 500px) {
+  .dashboard {
+    padding: 0 14px 40px;
+  }
+  .topbar a {
+    font-size: 11px;
+  }
+  .hero {
+    padding-top: 45px;
+  }
+  .metrics {
+    grid-template-columns: 1fr 1fr;
+  }
+  .pattern > header,
+  .question {
+    padding-left: 14px;
+    padding-right: 14px;
+  }
+  .pattern header > span {
+    display: none;
+  }
+}
